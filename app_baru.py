@@ -75,80 +75,76 @@ if 'seaborn_available' not in locals():
 # 💅 THEMING & CSS GEN Z (Neon-Fresh Style)
 # ===========================
 st.markdown("""
-    <style>
-    /* 1. Reset Global & Font */
-    html, body, [data-testid="stAppViewContainer"] > .main {
-        background-color: #0d1117; /* Gelap modern ala GitHub */
-        color: #e6edf3;
-        font-family: 'Open Sans', sans-serif;
-    }
-    
-    /* 2. Custom Sidebar (Dark Navy with Gradient) */
-    div[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #161b22 0%, #112a46 100%);
-        border-right: 1px solid #30363d;
-    }
-    div[data-testid="stSidebar"] * {
-        color: #e6edf3 !important;
-    }
-    div[data-testid="stSidebar"] h1 {
-        background: linear-gradient(90deg, #ff00ff, #00ffff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 800;
-    }
+<style>
 
-    /* 3. Custom Metric Cards (Neon Glow!) */
-    div[data-testid="stMetricValue"] {
-        color: #e6edf3;
-        font-size: 2.2rem;
-        font-weight: 700;
-    }
-    div[data-testid="stMetricLabel"] {
-        color: #8b949e;
-        font-size: 1rem;
-    }
-    
-    /* Efek Box untuk Metric */
-    div[data-testid="metric-container"] {
-        background-color: #161b22;
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid #30363d;
-        box-shadow: 0 4px 15px rgba(0,255,255,0.05);
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    div[data-testid="metric-container"]:hover {
-        transform: translateY(-3px);
-        border: 1px solid #00ffff;
-        box-shadow: 0 8px 25px rgba(0,255,255,0.1);
-    }
+/* Background utama */
+html, body, [data-testid="stAppViewContainer"] > .main {
+    background-color: #ffffff;
+    color: #000000;
+    font-family: 'Open Sans', sans-serif;
+}
 
-    /* 4. Gradasi Judul Utama */
-    .stHeader > h1 {
-        background: linear-gradient(90deg, #33ccff, #ff00ff, #ffcc00);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 900;
-    }
+/* Sidebar */
+div[data-testid="stSidebar"] {
+    background: #f5f5f5;
+    border-right: 1px solid #ddd;
+}
+div[data-testid="stSidebar"],
+div[data-testid="stSidebar"] * {
+    color: #000000;
+}
 
-    /* 5. Styling untuk Tombol (Cyan-Neon) */
-    div.stButton > button {
-        background-color: transparent !important;
-        color: #00ffff !important;
-        border: 2px solid #00ffff !important;
-        font-weight: bold !important;
-        border-radius: 20px !important;
-        padding: 10px 25px !important;
-        transition: 0.3s !important;
-    }
-    div.stButton > button:hover {
-        background-color: #00ffff !important;
-        color: #0d1117 !important;
-        box-shadow: 0 0 15px rgba(0,255,255,0.5) !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+/* Metric Card */
+div[data-testid="metric-container"] {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Judul */
+h1, h2, h3, h4, h5 {
+    color: #000000;
+}
+
+/* Tombol */
+div.stButton > button {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+div.stButton > button:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* 🔥 CARD TARGET (biru) → teks putih */
+.custom-card {
+    color: #ffffff !important;
+}
+.custom-card * {
+    color: #ffffff !important;
+}
+
+/* 🔥 REKOMENDASI → teks hitam */
+.rekomendasi-box {
+    background-color: #ffffff;
+    color: #000000 !important;
+}
+.rekomendasi-box * {
+    color: #000000 !important;
+}
+
+/* Optional: biar highlight biru gak ganggu */
+::selection {
+    background: #cce5ff;
+    color: #000000;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 # ===========================
 # 📂 SIDEBAR & UPLOAD
@@ -268,7 +264,7 @@ if menu == "🏠 Home":
     st.title("📊 ZISWAF Analytics")
     
     st.markdown("""
-        Selamat datang di **ZISWAF.ai**, alat forecasting ZISWAF tercanggih yang ditenagai oleh *Artificial Intelligence*.
+        Selamat datang di **ZISWAF.ai**, alat forecasting ZISWAF canggih yang ditenagai oleh *Artificial Intelligence*.
         
         ### Fitur Utama:
         - 📂 **Open Dataset:** Cek data mentah yang di-upload.
@@ -403,7 +399,10 @@ elif menu == "🧠 DSS Cerdas":
     c1, c2, c3 = st.columns(3)
     with c1: st.metric("Inflasi", f"{inflasi}%" if inflasi is not None else "Data N/A")
     with c2: st.metric("BI Rate", f"{bi_rate}%" if bi_rate is not None else "Data N/A")
-    with c3: st.metric("Kurs USD/IDR", f"Rp {kurs:,.0f}" if kurs is not None else "Data N/A")
+    with c3: st.metric(
+        "Kurs USD/IDR",
+        f"Rp {kurs*1000:,.0f}" if kurs is not None else "Data N/A"
+    )
 
     st.divider()
     
@@ -428,12 +427,17 @@ elif menu == "🧠 DSS Cerdas":
 
     # 2. Masukkan Pesan ke Dalam Kotak Neon
     st.markdown(f"""
-        <div style='border: 2px solid {status_warna}; padding: 20px; border-radius: 15px; background-color: rgba(255, 255, 255, 0.05);'>
-            <p style='color: #ffffff; margin: 0; font-size: 1.1rem; line-height: 1.6;'>
-                {pesan_dss}
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
+<div class="rekomendasi-box" style='
+    border: 2px solid {status_warna};
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #ffffff;
+'>
+    <p style='margin: 0; font-size: 1.1rem; line-height: 1.6;'>
+        {pesan_dss}
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
     # --- 2. Logika Rule-Based Temanmu ---
     
@@ -468,12 +472,22 @@ elif menu == "🧠 DSS Cerdas":
     
     # Tampilan Target pakai Card Neon
     st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #0d1117 0%, #1a3c61 100%); border: 2px solid #00ffff; padding: 25px; border-radius: 20px; text-align: center; box-shadow: 0 0 30px rgba(0,255,255,0.1);'>
-            <h1 style='color: white; margin: 0;'>TARGET 2025</h1>
-            <p style='color: #00ffff; font-size: 2.8rem; font-weight: 800; margin: 10px 0;'>Rp {target_optimal:,.0f}</p>
-            <p style='color: #8b949e; font-size: 1.1rem;'>Target ini disarankan oleh AI (forecast + 10% buffer) mengingat kondisi ekonomi yang diprediksi.</p>
-        </div>
-    """, unsafe_allow_html=True)
+<div class="custom-card" style='
+    background: linear-gradient(135deg, #0d1117 0%, #1a3c61 100%);
+    border: 2px solid #00ffff;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+'>
+    <h1>TARGET 2026</h1>
+    <p style='font-size: 2.8rem; font-weight: 800;'>
+        Rp {target_optimal:,.0f}
+    </p>
+    <p>
+        Target ini disarankan oleh AI (forecast + 10% buffer).
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
 # ===========================
 # 6. CRUD
